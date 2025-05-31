@@ -46,13 +46,13 @@ function reducer(previousState: {
 // console.log(afterIncrement);
 
 type Reducer = (state: any, action: { type: string }) => any;
-export function createStore(reducer: Reducer, initialState: any) {
+export function createStore<T>(reducer: Reducer, initialState: any) {
     let state = deepFreeze(initialState);
 
     let listeners: (() => void)[] = [];
 
     return {
-        getState: () => state,
+        getState: () => state as T,
         dispatch: (action: { type: string }) => {
             const nextState = reducer(state, action);
             if (nextState !== state) {
@@ -72,4 +72,4 @@ export function createStore(reducer: Reducer, initialState: any) {
     }
 }
 
-export const store = createStore(reducer, state);
+export const store = createStore<{ counter: number }>(reducer, state);
